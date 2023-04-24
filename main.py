@@ -22,11 +22,16 @@ from boostmonodepth_utils import run_boostmonodepth
 from MiDaS.monodepth_net import MonoDepthNet
 import MiDaS.MiDaS_utils as MiDaS_utils
 from bilateral_filtering import sparse_bilateral_filtering
+import subprocess
+from pyvirtualdisplay import Display
+
+subprocess.run('nvidia-smi', shell=True)
+display = Display(visible=0, size=(1920, 1080)).start()
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--config', type=str, default='argument.yml',help='Configure of post processing')
 args = parser.parse_args()
-config = yaml.load(open(args.config, 'r'))
+config = yaml.safe_load(open(args.config, 'r'))
 if config['offscreen_rendering'] is True:
     vispy.use(app='egl')
 os.makedirs(config['mesh_folder'], exist_ok=True)
